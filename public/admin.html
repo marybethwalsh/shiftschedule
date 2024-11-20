@@ -53,19 +53,28 @@
   </div>
 
   <script>
-    // Fetch student preferences from the Netlify function
+    // Fetch form submissions from Netlify Form API
     async function fetchPreferences() {
-      const response = await fetch('/.netlify/functions/getPreferences');
+      const response = await fetch('/.netlify/forms/{form-name}/submissions');
       const data = await response.json();
-      
-      // Display the preferences on the admin page
-      const list = document.getElementById('student-preferences');
-      list.innerHTML = data.preferences.map(pref => 
-        `<li><strong>${pref.studentName}</strong>: ${pref.preferences.join(', ')}</li>`
-      ).join('');
+
+      if (data && data.submissions) {
+        // Display the form submissions on the admin page
+        const list = document.getElementById('student-preferences');
+        list.innerHTML = data.submissions.map(submission => {
+          // Assuming each submission has `studentName` and `preferences` in its data
+          return `
+            <li>
+              <strong>${submission.data.studentName}</strong>: ${submission.data.preferences.join(', ')}
+            </li>
+          `;
+        }).join('');
+      } else {
+        console.log("No submissions found.");
+      }
     }
 
-    // Trigger schedule generation
+    // Trigger schedule generation (this part remains the same)
     document.getElementById('generate-schedule').addEventListener('click', async function() {
       const response = await fetch('/.netlify/functions/generateSchedule');
       const schedule = await response.json();
@@ -76,7 +85,7 @@
       ).join('');
     });
 
-    // Initialize by fetching preferences
+    // Initialize by fetching form submissions
     fetchPreferences();
   </script>
 </body>
