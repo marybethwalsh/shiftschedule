@@ -47,9 +47,9 @@
 </head>
 <body>
   <h1>Submit Your Preferences</h1>
-  <form id="preference-form" name="preferences" method="POST" netlify>
+  <form name="preferences" method="POST" data-netlify="true">
     <label for="studentName">Select Your Name:</label>
-    <select id="studentName" required>
+    <select id="studentName" name="studentName" required>
       <option value="">--Select--</option>
       <option value="Alice">Alice</option>
       <option value="Bob">Bob</option>
@@ -57,50 +57,10 @@
       <option value="Dana">Dana</option>
       <option value="Eve">Eve</option>
     </select>
-
-    <label>Select Your Available Time Slots:</label>
-    <table id="timeslot-table">
-      <thead>
-        <tr>
-          <th>Monday</th>
-          <th>Tuesday</th>
-          <th>Wednesday</th>
-          <th>Thursday</th>
-          <th>Friday</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td data-day="Monday" data-time="9am-11am">9am-11am</td>
-          <td data-day="Tuesday" data-time="9am-11am">9am-11am</td>
-          <td data-day="Wednesday" data-time="9am-11am">9am-11am</td>
-          <td data-day="Thursday" data-time="9am-11am">9am-11am</td>
-          <td data-day="Friday" data-time="9am-11am">9am-11am</td>
-        </tr>
-        <tr>
-          <td data-day="Monday" data-time="11am-1pm">11am-1pm</td>
-          <td data-day="Tuesday" data-time="11am-1pm">11am-1pm</td>
-          <td data-day="Wednesday" data-time="11am-1pm">11am-1pm</td>
-          <td data-day="Thursday" data-time="11am-1pm">11am-1pm</td>
-          <td data-day="Friday" data-time="11am-1pm">11am-1pm</td>
-        </tr>
-        <tr>
-          <td data-day="Monday" data-time="1pm-3pm">1pm-3pm</td>
-          <td data-day="Tuesday" data-time="1pm-3pm">1pm-3pm</td>
-          <td data-day="Wednesday" data-time="1pm-3pm">1pm-3pm</td>
-          <td data-day="Thursday" data-time="1pm-3pm">1pm-3pm</td>
-          <td data-day="Friday" data-time="1pm-3pm">1pm-3pm</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <label>Additional Preferences (optional):</label>
-    <input type="text" id="pref1" placeholder="1. e.g., Monday 9am-11am">
-    <input type="text" id="pref2" placeholder="2. e.g., Tuesday 11am-1pm">
-    <input type="text" id="pref3" placeholder="3. e.g., Wednesday 1pm-3pm">
-    <input type="text" id="pref4" placeholder="4. e.g., Thursday 3pm-5pm">
-    <input type="text" id="pref5" placeholder="5. e.g., Friday 9am-11am">
-
+  
+    <label for="preferences">Your Preferences:</label>
+    <textarea id="preferences" name="preferences" required></textarea>
+  
     <button type="submit">Submit Preferences</button>
   </form>
 
