@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Preferences</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    h1, button {
+      text-align: center;
+    }
+    form {
+      margin-top: 20px;
+    }
+    label, select, input {
+      display: block;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Submit Your Preferences</h1>
+  <form id="preference-form">
+    <label for="studentName">Select Your Name:</label>
+    <select id="studentName" required>
+      <option value="">--Select--</option>
+      <option value="Alice">Alice</option>
+      <option value="Bob">Bob</option>
+      <option value="Charlie">Charlie</option>
+      <option value="Dana">Dana</option>
+      <option value="Eve">Eve</option>
+    </select>
+
+    <label>Enter Your Preferences:</label>
+    <input type="text" id="pref1" placeholder="1. e.g., Monday 9am-11am" required>
+    <input type="text" id="pref2" placeholder="2. e.g., Tuesday 11am-1pm" required>
+    <input type="text" id="pref3" placeholder="3. e.g., Wednesday 1pm-3pm" required>
+    <input type="text" id="pref4" placeholder="4. e.g., Thursday 3pm-5pm" required>
+    <input type="text" id="pref5" placeholder="5. e.g., Friday 9am-11am" required>
+
+    <button type="submit">Submit Preferences</button>
+  </form>
+  <script>
+    document.getElementById('preference-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      const data = {
+        studentName: document.getElementById('studentName').value,
+        preferences: [
+          document.getElementById('pref1').value,
+          document.getElementById('pref2').value,
+          document.getElementById('pref3').value,
+          document.getElementById('pref4').value,
+          document.getElementById('pref5').value,
+        ],
+      };
+
+      const response = await fetch('/.netlify/functions/submitPreferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        alert('Preferences submitted successfully!');
+        document.getElementById('preference-form').reset();
+      } else {
+        alert('Error submitting preferences.');
+      }
+    });
+  </script>
+</body>
+</html>

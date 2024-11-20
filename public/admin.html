@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    h1, button {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <div id="preferences-list">
+    <h2>Student Preferences</h2>
+    <ul id="student-preferences"></ul>
+  </div>
+  <button id="generate-schedule">Generate Schedule</button>
+  <div id="schedule-output">
+    <h2>Optimized Schedule</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Time Slot</th>
+        </tr>
+      </thead>
+      <tbody id="schedule-table"></tbody>
+    </table>
+  </div>
+
+  <script>
+    async function fetchPreferences() {
+      const response = await fetch('/.netlify/functions/getPreferences');
+      const data = await response.json();
+      const list = document.getElementById('student-preferences');
+      list.innerHTML = data.preferences.map(pref => `<li>${pref.studentName}: ${pref.preferences.join(', ')}</li>`).join('');
+    }
+
+    document.getElementById('generate-schedule').addEventListener('click', async function() {
+      const response = await fetch('/.netlify/functions/generateSchedule');
+      const schedule = await response.json();
+
+      const table = document.getElementById('schedule-table');
+      table.innerHTML = schedule.map(entry => `<tr><td>${entry.name}</td><td>${entry.time}</td></tr>`).join('');
+    });
+
+    fetchPreferences();
+  </script>
+</body>
+</html>

@@ -1,65 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Schedule Preferences</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Scheduling</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Student Schedule Preferences</h1>
-
-        <!-- Form to submit preferences -->
-        <form name="preferences" netlify netlify-honeypot="bot-field" method="POST">
-            <input type="hidden" name="form-name" value="preferences" />
-            <h2>Submit Your Preferences</h2>
-
-            <label for="name">Student Name:</label>
-            <input type="text" id="name" name="name" required />
-
-            <label for="preference1">Preference 1 (e.g. Monday 9am-11am):</label>
-            <input type="text" id="preference1" name="preference1" required />
-
-            <label for="preference2">Preference 2 (e.g. Tuesday 12pm-2pm):</label>
-            <input type="text" id="preference2" name="preference2" required />
-
-            <label for="preference3">Preference 3 (e.g. Wednesday 1pm-3pm):</label>
-            <input type="text" id="preference3" name="preference3" required />
-
-            <label for="preference4">Preference 4 (e.g. Thursday 10am-12pm):</label>
-            <input type="text" id="preference4" name="preference4" required />
-
-            <label for="preference5">Preference 5 (e.g. Friday 2pm-4pm):</label>
-            <input type="text" id="preference5" name="preference5" required />
-
-            <button type="submit">Submit Preferences</button>
-        </form>
-
-        <!-- Display submitted preferences -->
-        <div id="preferences-output">
-            <h2>Submitted Preferences</h2>
-            <table id="preferences-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Preference 1</th>
-                        <th>Preference 2</th>
-                        <th>Preference 3</th>
-                        <th>Preference 4</th>
-                        <th>Preference 5</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Preferences will be dynamically inserted here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+  <h1>Welcome to the Student Scheduling App</h1>
+  <button onclick="location.href='submit.html'">Submit My Preferences</button>
+  <button onclick="location.href='admin.html'">Admin</button>
 </body>
-
 </html>
