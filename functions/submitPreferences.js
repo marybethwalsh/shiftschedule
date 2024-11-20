@@ -1,45 +1,30 @@
-const fs = require('fs');
-const path = require('path');
+// netlify/functions/submitPreferences.js
 
-// Path to store data
-const dataFilePath = path.join(__dirname, 'data.json');
+const { parse } = require('querystring');
 
-exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
+exports.handler = async (event, context) => {
+  if (event.httpMethod === 'POST') {
+    try {
+      const data = JSON.parse(event.body);
+
+      // Simulating saving the preferences (you can store it in a database or send it to an email)
+      console.log('Received data:', data);
+
+      // Return a success response
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: 'Preferences submitted successfully!' }),
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: 'Error processing the data', error }),
+      };
+    }
+  } else {
     return {
       statusCode: 405,
-      body: 'Method Not Allowed',
-    };
-  }
-
-  try {
-    const { studentName, preferences } = JSON.parse(event.body);
-
-    // Load existing data
-    let data = [];
-    if (fs.existsSync(dataFilePath)) {
-      data = JSON.parse(fs.readFileSync(dataFilePath, 'utf-8'));
-    }
-
-    // Add or update student preferences
-    const existingStudentIndex = data.findIndex((entry) => entry.studentName === studentName);
-    if (existingStudentIndex >= 0) {
-      data[existingStudentIndex].preferences = preferences;
-    } else {
-      data.push({ studentName, preferences });
-    }
-
-    // Save updated data
-    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf-8');
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: 'Preferences saved successfully' }),
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to save preferences' }),
+      body: JSON.stringify({ message: 'Method Not Allowed' }),
     };
   }
 };
