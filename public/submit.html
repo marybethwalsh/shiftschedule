@@ -17,13 +17,31 @@
     form {
       margin-top: 20px;
     }
-    label, select, input {
+    label {
       display: block;
       margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+      cursor: pointer;
+    }
+    .selected {
+      background-color: #4CAF50;
+      color: white;
     }
     button {
       padding: 10px 20px;
       cursor: pointer;
+    }
+    input, select {
+      display: block;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -40,28 +58,85 @@
       <option value="Eve">Eve</option>
     </select>
 
-    <label>Enter Your Preferences:</label>
-    <input type="text" id="pref1" placeholder="1. e.g., Monday 9am-11am" required>
-    <input type="text" id="pref2" placeholder="2. e.g., Tuesday 11am-1pm" required>
-    <input type="text" id="pref3" placeholder="3. e.g., Wednesday 1pm-3pm" required>
-    <input type="text" id="pref4" placeholder="4. e.g., Thursday 3pm-5pm" required>
-    <input type="text" id="pref5" placeholder="5. e.g., Friday 9am-11am" required>
+    <label>Select Your Available Time Slots:</label>
+    <table id="timeslot-table">
+      <thead>
+        <tr>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-day="Monday" data-time="9am-11am">9am-11am</td>
+          <td data-day="Tuesday" data-time="9am-11am">9am-11am</td>
+          <td data-day="Wednesday" data-time="9am-11am">9am-11am</td>
+          <td data-day="Thursday" data-time="9am-11am">9am-11am</td>
+          <td data-day="Friday" data-time="9am-11am">9am-11am</td>
+        </tr>
+        <tr>
+          <td data-day="Monday" data-time="11am-1pm">11am-1pm</td>
+          <td data-day="Tuesday" data-time="11am-1pm">11am-1pm</td>
+          <td data-day="Wednesday" data-time="11am-1pm">11am-1pm</td>
+          <td data-day="Thursday" data-time="11am-1pm">11am-1pm</td>
+          <td data-day="Friday" data-time="11am-1pm">11am-1pm</td>
+        </tr>
+        <tr>
+          <td data-day="Monday" data-time="1pm-3pm">1pm-3pm</td>
+          <td data-day="Tuesday" data-time="1pm-3pm">1pm-3pm</td>
+          <td data-day="Wednesday" data-time="1pm-3pm">1pm-3pm</td>
+          <td data-day="Thursday" data-time="1pm-3pm">1pm-3pm</td>
+          <td data-day="Friday" data-time="1pm-3pm">1pm-3pm</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <label>Additional Preferences (optional):</label>
+    <input type="text" id="pref1" placeholder="1. e.g., Monday 9am-11am">
+    <input type="text" id="pref2" placeholder="2. e.g., Tuesday 11am-1pm">
+    <input type="text" id="pref3" placeholder="3. e.g., Wednesday 1pm-3pm">
+    <input type="text" id="pref4" placeholder="4. e.g., Thursday 3pm-5pm">
+    <input type="text" id="pref5" placeholder="5. e.g., Friday 9am-11am">
 
     <button type="submit">Submit Preferences</button>
   </form>
+
   <script>
+    const selectedTimeslots = [];
+
+    // Toggle selection on timeslot table
+    document.getElementById('timeslot-table').addEventListener('click', function(event) {
+      if (event.target.tagName === 'TD') {
+        const slot = event.target.dataset;
+        const timeSlotKey = `${slot.day} ${slot.time}`;
+
+        // Toggle selection
+        if (selectedTimeslots.includes(timeSlotKey)) {
+          selectedTimeslots.splice(selectedTimeslots.indexOf(timeSlotKey), 1);
+          event.target.classList.remove('selected');
+        } else {
+          selectedTimeslots.push(timeSlotKey);
+          event.target.classList.add('selected');
+        }
+      }
+    });
+
+    // Handle form submission
     document.getElementById('preference-form').addEventListener('submit', async function(event) {
       event.preventDefault();
       
       const data = {
         studentName: document.getElementById('studentName').value,
-        preferences: [
+        preferences: selectedTimeslots.concat(
           document.getElementById('pref1').value,
           document.getElementById('pref2').value,
           document.getElementById('pref3').value,
           document.getElementById('pref4').value,
-          document.getElementById('pref5').value,
-        ],
+          document.getElementById('pref5').value
+        ).filter(pref => pref) // Filter out any empty preferences
       };
 
       const response = await fetch('/.netlify/functions/submitPreferences', {
@@ -73,6 +148,8 @@
       if (response.ok) {
         alert('Preferences submitted successfully!');
         document.getElementById('preference-form').reset();
+        selectedTimeslots.length = 0; // Clear selected timeslots
+        document.querySelectorAll('.selected').forEach(cell => cell.classList.remove('selected')); // Remove selected classes
       } else {
         alert('Error submitting preferences.');
       }
