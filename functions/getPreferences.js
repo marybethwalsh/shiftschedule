@@ -1,23 +1,15 @@
-const fs = require('fs');
-const path = require('path');
+// functions/getPreferences.js
 
-// Path to stored data
-const dataFilePath = path.join(__dirname, 'data.json');
-
-exports.handler = async () => {
-  try {
-    const data = fs.existsSync(dataFilePath)
-      ? JSON.parse(fs.readFileSync(dataFilePath, 'utf-8'))
-      : [];
-
+const preferences = [
+    { studentName: 'John Doe', preferences: ['Morning', 'Afternoon'] },
+    { studentName: 'Jane Smith', preferences: ['Evening'] },
+    // Add more mock data as needed
+  ];
+  
+  exports.handler = async function(event, context) {
     return {
       statusCode: 200,
-      body: JSON.stringify({ preferences: data }),
+      body: JSON.stringify({ preferences })
     };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to retrieve preferences' }),
-    };
-  }
-};
+  };
+  

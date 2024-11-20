@@ -53,21 +53,30 @@
   </div>
 
   <script>
+    // Fetch student preferences from the Netlify function
     async function fetchPreferences() {
       const response = await fetch('/.netlify/functions/getPreferences');
       const data = await response.json();
+      
+      // Display the preferences on the admin page
       const list = document.getElementById('student-preferences');
-      list.innerHTML = data.preferences.map(pref => `<li>${pref.studentName}: ${pref.preferences.join(', ')}</li>`).join('');
+      list.innerHTML = data.preferences.map(pref => 
+        `<li><strong>${pref.studentName}</strong>: ${pref.preferences.join(', ')}</li>`
+      ).join('');
     }
 
+    // Trigger schedule generation
     document.getElementById('generate-schedule').addEventListener('click', async function() {
       const response = await fetch('/.netlify/functions/generateSchedule');
       const schedule = await response.json();
 
       const table = document.getElementById('schedule-table');
-      table.innerHTML = schedule.map(entry => `<tr><td>${entry.name}</td><td>${entry.time}</td></tr>`).join('');
+      table.innerHTML = schedule.map(entry => 
+        `<tr><td>${entry.name}</td><td>${entry.time}</td></tr>`
+      ).join('');
     });
 
+    // Initialize by fetching preferences
     fetchPreferences();
   </script>
 </body>
